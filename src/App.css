@@ -1,0 +1,245 @@
+/* 전체 앱 스타일 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background-color: #121213;
+  color: #ffffff;
+}
+
+.app {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #121213;
+}
+
+/* 헤더 스타일 */
+.app-header {
+  padding: 20px;
+  border-bottom: 1px solid #3a3a3c;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.app-title {
+  color: #ffffff;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  letter-spacing: 2px;
+}
+
+.app-subtitle {
+  color: #cccccc;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* 메인 컨텐츠 */
+.app-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 30px 20px;
+  width: 100%;
+}
+
+.game-container {
+  max-width: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* 게임 보드 스타일 */
+.game-board {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.game-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.letter-box {
+  width: 60px;
+  height: 60px;
+  border: 2px solid #3a3a3c;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: transparent;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.letter-box.filled {
+  border-color: #565758;
+  background-color: #1a1a1b;
+}
+
+.letter-box.revealed {
+  color: #ffffff;
+  border-color: transparent;
+}
+
+.letter-content {
+  z-index: 2;
+  position: relative;
+}
+
+.emote-overlay {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  z-index: 3;
+}
+
+.emote-image {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.emote-text {
+  font-size: 16px;
+  line-height: 1;
+  cursor: help;
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+
+/* 가상 키보드 스타일 */
+.virtual-keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.keyboard-key {
+  min-width: 20px;
+  height: 30px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  background-color: #818384;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.keyboard-key:hover:not(:disabled) {
+  background-color: #9a9b9c;
+}
+
+.keyboard-key:active {
+  transform: scale(0.95);
+}
+
+.keyboard-key.special-key {
+  min-width: 60px;
+  font-size: 12px;
+  background-color: #565758;
+}
+
+.keyboard-key.disabled {
+  background-color: #3a3a3c;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.key-text {
+  white-space: nowrap;
+}
+
+/* 푸터 스타일 */
+.app-footer {
+  padding: 20px;
+  border-top: 1px solid #3a3a3c;
+  width: 100%;
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* 로딩 화면 */
+.loading-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #121213;
+}
+
+.loading-spinner {
+  text-align: center;
+  color: #ffffff;
+}
+
+.loading-spinner h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  letter-spacing: 3px;
+}
+
+.loading-spinner p {
+  font-size: 1.2rem;
+  color: #cccccc;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 480px) {
+  .app-title {
+    font-size: 2rem;
+  }
+  
+  .letter-box {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+  }
+  
+  .keyboard-key {
+    min-width: 35px;
+    height: 45px;
+    font-size: 12px;
+  }
+  
+  .keyboard-key.special-key {
+    min-width: 55px;
+  }
+}
