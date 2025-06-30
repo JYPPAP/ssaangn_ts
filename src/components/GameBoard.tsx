@@ -1,13 +1,17 @@
 import React from 'react';
-import { useGameStore } from '../stores/gameStore';
-import { FEEDBACK_DATA, type GameEmote } from '../utils/gameLogic';
+import { useGameStore, type GameEmote } from '../stores/gameStore';
+import { 
+  FEEDBACK_DATA_MAP,
+  NUMBER_OF_GUESSES,
+  MAX_LETTERS 
+} from '../data/constants';
 
 const GameBoard: React.FC = () => {
   const { board, currentGuess, currentGuessIndex } = useGameStore();
 
   return (
-    <div className="game-board">
-      {Array.from({ length: 7 }, (_, rowIndex) => (
+    <div className="game-board" id="game-board">
+      {Array.from({ length: NUMBER_OF_GUESSES }, (_, rowIndex) => (
         <GameRow
           key={rowIndex}
           rowIndex={rowIndex}
@@ -24,6 +28,11 @@ const GameBoard: React.FC = () => {
               ? board[rowIndex].emotes
               : undefined
           }
+          hint={
+            rowIndex < board.length
+              ? board[rowIndex].hint
+              : undefined
+          }
         />
       ))}
     </div>
@@ -35,17 +44,20 @@ interface GameRowProps {
   isCurrentRow: boolean;
   letters: string[];
   emotes?: GameEmote[];
+  hint?: string;
 }
 
 const GameRow: React.FC<GameRowProps> = ({ 
   rowIndex, 
   isCurrentRow, 
   letters, 
-  emotes 
+  emotes,
+  hint 
 }) => {
   return (
-    <div className={`game-row ${isCurrentRow ? 'current-row' : ''}`}>
-      {Array.from({ length: 2 }, (_, colIndex) => (
+    <div className={`letter-row game-row ${isCurrentRow ? 'current-row' : ''}`}>
+      {/* 단일 행에 글자 박스들만 렌더링 (가로 정렬) */}
+      {Array.from({ length: MAX_LETTERS }, (_, colIndex) => (
         <LetterBox
           key={`${rowIndex}-${colIndex}`}
           letter={letters[colIndex] || ''}
@@ -55,6 +67,13 @@ const GameRow: React.FC<GameRowProps> = ({
           colIndex={colIndex}
         />
       ))}
+      
+      {/* 힌트 표시 (필요한 경우) */}
+      {hint && hint !== 'X' && (
+        <div className="shade-hint" id="shade-hint-box">
+          {hint}
+        </div>
+      )}
     </div>
   );
 };
@@ -74,23 +93,25 @@ const LetterBox: React.FC<LetterBoxProps> = ({
   rowIndex,
   colIndex 
 }) => {
-  const feedbackData = emote ? FEEDBACK_DATA[emote] : null;
+  const feedbackData = emote ? FEEDBACK_DATA_MAP[emote] : null;
   
   return (
     <div 
       className={`letter-box ${isRevealed ? 'revealed' : ''} ${letter ? 'filled' : ''}`}
       style={{
-        backgroundColor: feedbackData?.color || 'transparent',
-        animationDelay: isRevealed ? `${colIndex * 100}ms` : '0ms'
+        backgroundColor: feedbackData?.[3] || 'transparent', // DATA_COLOR 인덱스는 3
+        animationDelay: isRevealed ? `${colIndex * 150}ms` : '0ms'
       }}
     >
       <div className="letter-content">
         {letter}
       </div>
-      {isRevealed && emote && (
+      
+      {/* 이모지 오버레이 (우측 상단) */}
+      {emote && (
         <div className="emote-overlay">
           <div className="emote-image">
-            <span className="emote-text" title={FEEDBACK_DATA[emote]?.description || emote}>
+            <span className="emote-text">
               {emote}
             </span>
           </div>

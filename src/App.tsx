@@ -7,6 +7,7 @@ import { useStatsStore } from './stores/statsStore';
 import { useSettingsStore } from './stores/settingsStore';
 import { initializeStores } from './stores';
 import { keyboardKeyToJamoText } from './utils/hangul/core';
+import { EMOTE_HINT } from './data/constants';
 import './App.css';
 
 function App() {
@@ -79,6 +80,13 @@ function App() {
         return;
       }
 
+      // 힌트 키 (7번 키)
+      if (key === '7' || key === EMOTE_HINT) {
+        event.preventDefault();
+        useHint();
+        return;
+      }
+
       // 한글 자모 변환
       const hangulKey = keyboardKeyToJamoText(key);
       if (hangulKey !== key) {
@@ -96,7 +104,7 @@ function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isResultModalOpen, gameStatus, insertLetter, deleteLetter, submitGuess]);
+  }, [isResultModalOpen, gameStatus, insertLetter, deleteLetter, submitGuess, useHint]);
 
   // 테마 적용
   useEffect(() => {

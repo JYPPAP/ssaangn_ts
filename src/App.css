@@ -63,18 +63,27 @@ body {
   gap: 30px;
 }
 
-/* 게임 보드 스타일 */
+/* 게임 보드 스타일 - 원본 스타일 적용 */
 .game-board {
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin-bottom: 20px;
+  align-items: center;
 }
 
-.game-row {
+.game-row,
+.letter-row {
   display: flex;
   gap: 8px;
   justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.letter-row.current-row {
+  transform: scale(1.02);
+  z-index: 1;
 }
 
 .letter-box {
@@ -93,7 +102,8 @@ body {
   position: relative;
 }
 
-.letter-box.filled {
+.letter-box.filled,
+.letter-box.filled-box {
   border-color: #565758;
   background-color: #1a1a1b;
 }
@@ -128,6 +138,224 @@ body {
   line-height: 1;
   cursor: help;
   filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+/* 힌트 표시 스타일 */
+.shade-hint {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #FFD700;
+  color: #000;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 4;
+  border: 2px solid #FFF;
+}
+
+/* 컴팩트 레이아웃 최적화 */
+@media (max-width: 600px) {
+  .game-board {
+    gap: 6px;
+  }
+  
+  .game-row,
+  .letter-row {
+    gap: 6px;
+  }
+  
+  .letter-box {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+  }
+  
+  .emote-overlay {
+    top: 1px;
+    right: 1px;
+  }
+  
+  .emote-image {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .emote-text {
+    font-size: 14px;
+  }
+}
+
+/* 결과 모달 스타일 추가 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.result-modal {
+  background-color: #1a1a1b;
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 400px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  border: 1px solid #3a3a3c;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.result-title {
+  color: #ffffff;
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.answer-section,
+.game-result,
+.stats-section,
+.board-preview {
+  margin-bottom: 20px;
+}
+
+.answer-word {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.meaning-item {
+  background-color: #2a2a2b;
+  padding: 8px 12px;
+  margin: 4px 0;
+  border-radius: 4px;
+  color: #cccccc;
+}
+
+.mini-board {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+
+.mini-row {
+  display: flex;
+  gap: 4px;
+}
+
+.mini-emote {
+  font-size: 20px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mini-emote-placeholder {
+  font-size: 16px;
+  color: #666;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-results {
+  color: #666;
+  text-align: center;
+  font-style: italic;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.share-button,
+.new-game-button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.share-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.share-button:hover {
+  background-color: #45a049;
+}
+
+.new-game-button {
+  background-color: #2196F3;
+  color: white;
+}
+
+.new-game-button:hover {
+  background-color: #1976D2;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  text-align: center;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-number {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #cccccc;
 }
 
 

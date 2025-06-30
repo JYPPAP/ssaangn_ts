@@ -12,6 +12,7 @@ const ResultModal: React.FC<ResultModalProps> = ({ isOpen, onClose }) => {
   const { 
     gameStatus, 
     secretWord, 
+    secretWordString,
     currentGuessIndex, 
     board,
     resetGame 
@@ -59,11 +60,24 @@ const ResultModal: React.FC<ResultModalProps> = ({ isOpen, onClose }) => {
   };
 
   const generateGameResult = (): string => {
-    const emoteBoard = board.map(row => 
-      row.emotes.join('')
-    ).join('\n');
+    // 보드에서 이모지 결과 생성 (실제 게임 데이터 사용)
+    const emoteBoard = board.length > 0 
+      ? board.map(row => 
+          row.emotes && row.emotes.length > 0 
+            ? row.emotes.join('')
+            : '🍎🍎' // 기본값
+        ).join('\n')
+      : '게임 결과 없음';
 
-    return `쌍근 ${getCurrentGameNumber()} ${isWin ? guessCount : 'X'}/7\n\n${emoteBoard}\n\nhttps://ssaangn.com`;
+    // 정답 단어 정보 추가
+    const answerWord = secretWord?.word || secretWordString || '알 수 없음';
+    
+    return `쌍근 ${getCurrentGameNumber()} ${isWin ? guessCount : 'X'}/7
+
+${emoteBoard}
+
+정답: ${answerWord}
+https://ssaangn.com`;
   };
 
   const getCurrentGameNumber = (): number => {
@@ -92,14 +106,20 @@ const ResultModal: React.FC<ResultModalProps> = ({ isOpen, onClose }) => {
           <div className="answer-section">
             <h3>정답</h3>
             <div className="answer-word">
-              {secretWord?.word || ''}
+              {secretWord?.word || secretWordString || ''}
             </div>
             <div className="answer-meanings">
-              {meanings.map((meaning, index) => (
-                <div key={index} className="meaning-item">
-                  {meaning}
+              {meanings.length > 0 ? (
+                meanings.map((meaning, index) => (
+                  <div key={index} className="meaning-item">
+                    {meaning}
+                  </div>
+                ))
+              ) : (
+                <div className="meaning-item">
+                  {secretWordString ? `단어: ${secretWordString}` : '의미 정보 없음'}
                 </div>
-              ))}
+              )}
             </div>
           </div>
 
@@ -138,15 +158,25 @@ const ResultModal: React.FC<ResultModalProps> = ({ isOpen, onClose }) => {
           <div className="board-preview">
             <h3>결과</h3>
             <div className="mini-board">
-              {board.map((row, index) => (
-                <div key={index} className="mini-row">
-                  {row.emotes.map((emote, emoteIndex) => (
-                    <span key={emoteIndex} className="mini-emote">
-                      {emote}
-                    </span>
-                  ))}
+              {board.length > 0 ? (
+                board.map((row, index) => (
+                  <div key={index} className="mini-row">
+                    {row.emotes && row.emotes.length > 0 ? (
+                      row.emotes.map((emote, emoteIndex) => (
+                        <span key={emoteIndex} className="mini-emote">
+                          {emote}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="mini-emote-placeholder">--</span>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <div className="no-results">
+                  게임 결과가 없습니다.
                 </div>
-              ))}
+              )}
             </div>
           </div>
         </div>
