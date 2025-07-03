@@ -27,3 +27,6 @@ export interface WordData {
 
 // DB에서 가져올 때의 원시 형태 - re-export from database
 export type { WordDataRaw } from './database';
+
+// 게임 스토어 관련 타입들 re-export
+export * from './gameTypes';

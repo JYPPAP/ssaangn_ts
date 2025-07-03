@@ -4,7 +4,10 @@
       "Bash(grep:*)",
       "Bash(rg:*)",
       "Bash(npm run build:*)",
-      "Bash(timeout 10s npm run dev)"
+      "Bash(timeout 10s npm run dev)",
+      "Bash(mkdir:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run:*)"
     ],
     "deny": []
   }

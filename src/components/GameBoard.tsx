@@ -1,5 +1,6 @@
 import React from 'react';
-import { useGameStore, type GameEmote } from '../stores/gameStore';
+import { useGame } from '../hooks/useGame';
+import type { GameEmote } from '../types/gameTypes';
 import { 
   FEEDBACK_DATA_MAP,
   NUMBER_OF_GUESSES,
@@ -7,7 +8,7 @@ import {
 } from '../data/constants';
 
 const GameBoard: React.FC = () => {
-  const { board, currentGuess, currentGuessIndex } = useGameStore();
+  const { board, currentGuess, currentGuessIndex } = useGame();
 
   return (
     <div className="game-board" id="game-board">

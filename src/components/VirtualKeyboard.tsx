@@ -1,5 +1,8 @@
 import React from 'react';
-import { useGameStore, KeyboardState } from '../stores/gameStore';
+import { useGame } from '../hooks/useGame';
+import { useKeyboard } from '../hooks/useKeyboard';
+import { useGameStore } from '../stores/gameStore';
+import type { KeyboardState } from '../types/gameTypes';
 import { 
   HANGUL_KEYBOARD_ROWS,
   EMOTE_HINT,
@@ -16,10 +19,11 @@ const VirtualKeyboard: React.FC = () => {
     submitGuess, 
     useHint,
     guessesRemaining,
-    hintsRemaining,
-    hintList,
-    getKeyBoardShade
-  } = useGameStore();
+    hintsRemaining
+  } = useGame();
+  
+  const { getKeyBoardShade } = useKeyboard();
+  const { hintList } = useGameStore();
 
   const handleKeyPress = (key: string) => {
     if (guessesRemaining <= 0) return;
